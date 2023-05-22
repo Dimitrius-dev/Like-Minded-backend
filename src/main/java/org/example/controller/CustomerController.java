@@ -2,6 +2,7 @@ package org.example.controller;
 
 import org.example.entity.Customer;
 import org.example.entity.Project;
+import org.example.model.MsgModel;
 import org.example.repos.CustomerRepo;
 import org.example.repos.ProjectRepo;
 import org.slf4j.Logger;
@@ -49,21 +50,21 @@ public class CustomerController {
         }
     }
     @PostMapping("/customer")
-    public ResponseEntity createCustomer(@RequestBody Customer customer) {
+    public ResponseEntity<MsgModel> createCustomer(@RequestBody Customer customer) {
         try {
             if(customer == null){
                 throw new IOException("sended null object");
             }
             log.info(customer.toString());
             customerRepo.save(customer);
-            return ResponseEntity.ok().body("user saved");//);UsersModel.toModel(userService.getAll()));
+            return new ResponseEntity<>(new MsgModel("user saved"), HttpStatus.OK);//);UsersModel.toModel(userService.getAll()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
     @DeleteMapping("/customer/{login}/project/{name}")
-    public ResponseEntity deleteCustomerProject(@PathVariable String login, @PathVariable String name) {
+    public ResponseEntity<MsgModel> deleteCustomerProject(@PathVariable String login, @PathVariable String name) {
         try {
             //Customer customer = customerRepo.findByLogin(login);
             //customer.getProjects().remove(
@@ -72,14 +73,14 @@ public class CustomerController {
                     projectRepo.findProjectByName(name)
             );
 
-            return ResponseEntity.ok().body("project deleted");//);UsersModel.toModel(userService.getAll()));
+            return new ResponseEntity<>(new MsgModel("project deleted"), HttpStatus.OK);//);UsersModel.toModel(userService.getAll()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
     @PostMapping("/customer/{login}/project")
-    public ResponseEntity createCustomerProject(@PathVariable String login,
+    public ResponseEntity<MsgModel> createCustomerProject(@PathVariable String login,
                                                 @RequestBody Project project) {
         try {
             Customer customer = customerRepo.findByLogin(login);
@@ -90,14 +91,14 @@ public class CustomerController {
             );
             customerRepo.save(customer);
 
-            return ResponseEntity.ok().body("project added");//);UsersModel.toModel(userService.getAll()));
+            return new ResponseEntity<>(new MsgModel("project added"), HttpStatus.OK);//);UsersModel.toModel(userService.getAll()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
     @PostMapping("/customer/{login}/sub/{name}")
-    public ResponseEntity subProject(@PathVariable String login, @PathVariable String name) {
+    public ResponseEntity<MsgModel> subProject(@PathVariable String login, @PathVariable String name) {
         try {
             Customer customer = customerRepo.findByLogin(login);
             Project project = projectRepo.findProjectByName(name);
@@ -105,14 +106,14 @@ public class CustomerController {
             customer.getProjectSubs().add(project);
             customerRepo.save(customer);
 
-            return ResponseEntity.ok().body("sub on project");//);UsersModel.toModel(userService.getAll()));
+            return new ResponseEntity<>(new MsgModel("sub on project"), HttpStatus.OK);//);UsersModel.toModel(userService.getAll()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
     @DeleteMapping("/customer/{login}/sub/{name}")
-    public ResponseEntity unsubProject(@PathVariable String login, @PathVariable String name) {
+    public ResponseEntity<MsgModel> unsubProject(@PathVariable String login, @PathVariable String name) {
         try {
             Customer customer = customerRepo.findByLogin(login);
             Project project = projectRepo.findProjectByName(name);
@@ -120,7 +121,7 @@ public class CustomerController {
             customer.getProjectSubs().remove(project);
             customerRepo.save(customer);
 
-            return ResponseEntity.ok().body("unsub on project");//);UsersModel.toModel(userService.getAll()));
+            return new ResponseEntity<>(new MsgModel("unsub on project"), HttpStatus.OK);//);UsersModel.toModel(userService.getAll()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
