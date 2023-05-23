@@ -28,14 +28,14 @@ public class CustomerController {
         this.projectRepo = projectRepo;
     }
 
-//    @GetMapping("/hello")
-//    public ResponseEntity hello() {
-//        try {
-//            return ResponseEntity.ok().body("hello user");//);UsersModel.toModel(userService.getAll()));
-//        } catch (Exception e) {
-//            return ResponseEntity.badRequest().body("some error");
-//        }
-//    }
+    @GetMapping("/hello")
+    public ResponseEntity hello() {
+        try {
+            return ResponseEntity.ok().body("hello user");//);UsersModel.toModel(userService.getAll()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("some error");
+        }
+    }
 
     @GetMapping("/customer/{login}")
     public ResponseEntity<Customer> getCustomer(@PathVariable String login) {
