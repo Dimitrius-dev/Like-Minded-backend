@@ -1,6 +1,9 @@
 package org.example.model;
 
 public class MsgModel {
+
+    public MsgModel() {
+    }
     private String msg;
 
     public MsgModel(String msg) {

@@ -1,14 +1,11 @@
 package org.example.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 //import org.springframework.data.annotation.Id;
 
@@ -16,7 +13,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "project")
-public class Project {
+public class ProjectEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +28,7 @@ public class Project {
     @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "customer_author_id")
-    private Customer authorCustomer;
+    private CustomerEntity authorCustomerEntity;
 
     @JsonManagedReference
     @ManyToMany
@@ -40,8 +37,7 @@ public class Project {
             joinColumns = { @JoinColumn(name = "group_sub_id") },
             inverseJoinColumns = { @JoinColumn(name = "customer_sub_id") }
     )
-    private Set<Customer> customerSubs = new HashSet<>();
-
+    private Set<CustomerEntity> customerEntitySubs = new HashSet<>();
 
     @Override
     public String toString() {
@@ -49,8 +45,8 @@ public class Project {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", authorCustomer=" + authorCustomer +
-                ", customerSubs=" + customerSubs +
+                ", authorCustomer=" + authorCustomerEntity +
+                ", customerSubs=" + customerEntitySubs +
                 '}';
     }
     //private List<> String password;

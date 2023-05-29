@@ -1,6 +1,6 @@
 package org.example.service;
 
-import org.example.entity.Customer;
+import org.example.entity.CustomerEntity;
 import org.example.exception.UserAlreadyExistsException;
 import org.example.exception.UserNotFoundException;
 import org.example.jwt.JwtProvider;
@@ -33,11 +33,11 @@ public class AuthService {
         if(customerRepo.findByLogin(authModel.getLogin()) != null){
             throw new UserAlreadyExistsException("Customer exists");
         }
-        Customer customer = new Customer();
-        customer.setLogin(authModel.getLogin());
-        customer.setPassword(authModel.getPassword());
+        CustomerEntity customerEntity = new CustomerEntity();
+        customerEntity.setLogin(authModel.getLogin());
+        customerEntity.setPassword(authModel.getPassword());
 
-        customerRepo.save(customer);
+        customerRepo.save(customerEntity);
 
         authModel.setToken(jwtProvider.generateAccessToken(authModel));
         return authModel;
@@ -45,7 +45,8 @@ public class AuthService {
 
     public AuthModel authenticate(AuthModel authModel) throws UserNotFoundException {
 
-        if(customerRepo.findByLogin(authModel.getLogin()) == null){
+        CustomerEntity customerEntity = customerRepo.findByLogin(authModel.getLogin());
+        if( (customerEntity == null) && (!authModel.getPassword().equals(customerEntity.getPassword())) ){
             throw new UserNotFoundException("Customer exists");
         }
 
