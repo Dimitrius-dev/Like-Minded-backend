@@ -23,7 +23,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthModel> register(@RequestBody AuthModel authModel) throws AuthException {
+    public ResponseEntity<AuthModel> register(@RequestBody AuthModel authModel) { // throws AuthException
         try {
             return new ResponseEntity<>(authService.register(authModel), HttpStatus.OK);
         }   catch (UserAlreadyExistsException e){
