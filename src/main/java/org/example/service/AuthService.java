@@ -33,6 +33,7 @@ public class AuthService {
         if(customerRepo.findByLogin(authModel.getLogin()) != null){
             throw new UserAlreadyExistsException("Customer exists");
         }
+
         CustomerEntity customerEntity = new CustomerEntity();
         customerEntity.setLogin(authModel.getLogin());
         customerEntity.setPassword(authModel.getPassword());
@@ -46,8 +47,8 @@ public class AuthService {
     public AuthModel authenticate(AuthModel authModel) throws UserNotFoundException {
 
         CustomerEntity customerEntity = customerRepo.findByLogin(authModel.getLogin());
-        if( (customerEntity == null) && (!authModel.getPassword().equals(customerEntity.getPassword())) ){
-            throw new UserNotFoundException("Customer exists");
+        if( (customerEntity == null) || (!authModel.getPassword().equals(customerEntity.getPassword())) ){
+            throw new UserNotFoundException("Customer not exists");
         }
 
         authModel.setToken(jwtProvider.generateAccessToken(authModel));
