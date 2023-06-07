@@ -21,7 +21,6 @@ import java.util.List;
 public class ProjectController {
     private Logger log = LoggerFactory.getLogger(this.getClass());
     private final ProjectRepo projectRepo;
-
     private final CustomerRepo customerRepo;
 
     ProjectController(ProjectRepo projectRepo, CustomerRepo customerRepo){
