@@ -84,29 +84,6 @@ public class CustomerController {
         }
     }
 
-    @PostMapping("/customer/{login}/project")
-    public ResponseEntity<MsgModel> createCustomerProject(@PathVariable String login,
-                                                @RequestBody ProjectModel projectModel) {
-        try {
-            CustomerEntity customerEntity = customerRepo.findByLogin(login);
-
-            ProjectEntity projectEntity = new ProjectEntity();
-
-            projectEntity.setName(projectModel.getName());
-            projectEntity.setDescription(projectModel.getDescription());
-            projectEntity.setAuthorCustomerEntity(customerEntity);
-
-            customerEntity.getProjectEntities().add(
-                    projectEntity
-            );
-            customerRepo.save(customerEntity);
-
-            return new ResponseEntity<>(new MsgModel("project added"), HttpStatus.OK);//);UsersModel.toModel(userService.getAll()));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
-
     @PostMapping("/customer/{login}/sub/{name}")
     public ResponseEntity<MsgModel> subProject(@PathVariable String login, @PathVariable String name) {
         try {
@@ -156,51 +133,5 @@ public class CustomerController {
         }
     }
 
-    @GetMapping("/projects")
-    public ResponseEntity<List<ProjectModel>> getProjects() {
-        try {
-            List<ProjectEntity> projectEntityList = projectRepo.findAll();
-
-            List<ProjectModel> projectModelList = new ArrayList<>();
-
-            for(ProjectEntity iter : projectEntityList){
-                projectModelList.add(new ProjectModel(iter ));
-            }
-
-            return new ResponseEntity<>(projectModelList, HttpStatus.OK);//);UsersModel.toModel(userService.getAll()));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
-
-    @GetMapping("/customer/{login}/projects")
-    public ResponseEntity<List<ProjectModel>> getCustomerProjects(@PathVariable String login) {
-        try {
-            CustomerEntity customerEntity = customerRepo.findByLogin(login);
-
-            List<ProjectModel> projectModelList = new ArrayList<>();
-
-            for(ProjectEntity iter : customerEntity.getProjectEntities()){
-                projectModelList.add(new ProjectModel(iter));
-            }
-
-            return new ResponseEntity<>(projectModelList, HttpStatus.OK);//);UsersModel.toModel(userService.getAll()));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
-
-    @GetMapping("/project/{name}")
-    public ResponseEntity<ProjectModel> getProject(@PathVariable String name) {
-        try {
-            ProjectEntity projectEntity = projectRepo.findProjectByName(name);
-            if(projectEntity == null){
-                throw new IOException("null project");
-            }
-            return new ResponseEntity<>(new ProjectModel(projectEntity), HttpStatus.OK);//);UsersModel.toModel(userService.getAll()));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
 
 }
